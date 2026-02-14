@@ -6,17 +6,66 @@
 <style>
 body{
   margin:0;
-  font-family:Arial,sans-serif;
   overflow:hidden;
+  font-family:Arial,sans-serif;
   background:black;
   color:white;
 }
 
-/* Slideshow */
-#slideshow{
-  position:relative;
+/* ===== INTRO ===== */
+#intro{
+  position:absolute;
   width:100%;
   height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(45deg,#ff3366,#ff6699);
+  z-index:5;
+}
+
+#intro h1{
+  font-size:40px;
+  animation:fadeIn 2s ease-in-out;
+}
+
+#startBtn{
+  margin-top:30px;
+  padding:15px 30px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  background:white;
+  color:#ff3366;
+  cursor:pointer;
+  display:none;
+}
+
+/* Floating Hearts */
+.heart{
+  position:absolute;
+  color:white;
+  animation:float 6s linear infinite;
+  font-size:24px;
+}
+
+@keyframes float{
+  0%{ transform:translateY(100vh) scale(0.5); opacity:1;}
+  100%{ transform:translateY(-10vh) scale(1.2); opacity:0;}
+}
+
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+/* ===== SLIDESHOW ===== */
+#slideshow{
+  position:absolute;
+  width:100%;
+  height:100vh;
+  display:none;
 }
 
 .slide{
@@ -27,7 +76,10 @@ body{
   opacity:0;
   filter:blur(15px);
   transform:scale(1);
-  transition: opacity 1.8s ease-in-out, filter 1.8s ease-in-out, transform 8s ease-in-out;
+  transition:
+    opacity 1.8s ease-in-out,
+    filter 1.8s ease-in-out,
+    transform 8s ease-in-out;
 }
 
 .slide.active{
@@ -36,7 +88,6 @@ body{
   transform:scale(1.08);
 }
 
-/* Text overlay */
 .overlay{
   position:absolute;
   bottom:120px;
@@ -48,7 +99,7 @@ body{
   min-height:80px;
 }
 
-/* Buttons */
+/* Navigation Buttons */
 #prevBtn, #nextBtn{
   position:absolute;
   bottom:40px;
@@ -86,9 +137,17 @@ body{
 #noBtn{ background:#555; color:white; position:relative; }
 </style>
 </head>
-
 <body>
+
+<!-- ===== INTRO ===== -->
+<div id="intro">
+  <h1>Chunnu… something special is coming ❤️</h1>
+  <button id="startBtn">Start Our Story ✨</button>
+</div>
+
+<!-- ===== SLIDESHOW ===== -->
 <div id="slideshow">
+
   <img src="1.webp" class="slide">
   <img src="2.webp" class="slide">
   <img src="3.webp" class="slide">
@@ -115,8 +174,32 @@ body{
 </div>
 
 <script>
+/* Floating hearts */
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML="❤️";
+  heart.style.left=Math.random()*100+"%";
+  heart.style.animationDuration=(Math.random()*3+3)+"s";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart,500);
+
+/* Show Start Button after 5s */
+setTimeout(()=>{
+  document.getElementById("startBtn").style.display="block";
+},5000);
+
+document.getElementById("startBtn").onclick=function(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("slideshow").style.display="block";
+  showSlide(currentIndex);
+}
+
+/* SLIDESHOW LOGIC */
 const slides=document.querySelectorAll(".slide");
-const slideText=document.getElementById("slideText");
+const slideTextDiv=document.getElementById("slideText");
 const prevBtn=document.getElementById("prevBtn");
 const nextBtn=document.getElementById("nextBtn");
 const finalQuestion=document.getElementById("finalQuestion");
@@ -140,6 +223,7 @@ const slideTexts=[
 "Our last trip and last romantic dinner as girlfriend & boyfriend… but definitely not our last forever ❤️"
 ];
 
+/* Typing animation */
 function typeWriter(text, element, speed=40){
   element.innerHTML="";
   let i=0;
@@ -153,12 +237,13 @@ function typeWriter(text, element, speed=40){
   typing();
 }
 
+/* Show slide */
 function showSlide(index){
   slides.forEach(slide=>slide.classList.remove("active"));
   slides[index].classList.add("active");
-  typeWriter(slideTexts[index],slideText);
+  typeWriter(slideTexts[index],slideTextDiv);
 
-  // Show final question on last slide
+  // Final question
   if(index===slides.length-1){
     nextBtn.style.display="none";
     finalQuestion.style.display="block";
@@ -167,21 +252,17 @@ function showSlide(index){
     finalQuestion.style.display="none";
   }
 
-  // Hide prev button on first slide
-  if(index===0){
-    prevBtn.style.display="none";
-  }else{
-    prevBtn.style.display="inline-block";
-  }
+  // Prev button
+  prevBtn.style.display=(index===0)?"none":"inline-block";
 }
 
+/* Navigation buttons */
 prevBtn.onclick=function(){
   if(currentIndex>0){
     currentIndex--;
     showSlide(currentIndex);
   }
 }
-
 nextBtn.onclick=function(){
   if(currentIndex<slides.length-1){
     currentIndex++;
@@ -189,12 +270,12 @@ nextBtn.onclick=function(){
   }
 }
 
-// Yes button click
+/* Yes button click */
 yesBtn.onclick=function(){
   alert("Yay! ❤️ You made my day!");
 }
 
-// No button runs away on hover
+/* No button runs away */
 noBtn.onmouseover=function(){
   const maxX=window.innerWidth-100;
   const maxY=window.innerHeight-50;
@@ -203,7 +284,6 @@ noBtn.onmouseover=function(){
   noBtn.style.top=Math.random()*maxY+"px";
 }
 
-showSlide(currentIndex);
 </script>
 </body>
 </html>
