@@ -1,89 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>❤️ Valentine?</title>
-  <style>
-    body {
-      background: linear-gradient(135deg, #ffe6f0, #ffd6e7);
-      font-family: 'Arial', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
+<meta charset="UTF-8">
+<title>For My Forever ❤️</title>
 
-    .box {
-      background: white;
-      padding: 40px;
-      border-radius: 25px;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-      position: relative;
-      width: 500px;
-    }
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: black;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
 
-    h1 {
-      color: #ff3366;
-      margin-bottom: 10px;
-    }
+.container {
+  text-align: center;
+  max-width: 600px;
+}
 
-   button {
-      padding: 12px 25px;
-      font-size: 16px;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      position: relative;
-    }
+.line {
+  opacity: 0;
+  font-size: 22px;
+  margin: 15px 0;
+  transition: opacity 2s ease;
+}
 
-    #yes {
-      background-color: #ff3366;
-      color: white;
-    }
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 30px;
+  border: none;
+  background: #ff3366;
+  color: white;
+  cursor: pointer;
+  margin-top: 25px;
+  display: none;
+}
 
-    #no {
-      background-color: #ccc;
-      color: black;
-      position: absolute;
-    }
-  </style>
+img {
+  width: 250px;
+  margin-top: 20px;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+.heart {
+  position: absolute;
+  color: red;
+  font-size: 20px;
+  animation: float 4s linear infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); opacity:1;}
+  100% { transform: translateY(-500px); opacity:0;}
+}
+</style>
 </head>
 
 <body>
 
-  <div class="box" id="box">
-    <h1>Chunnu, will you be my Valentine? 💖</h1>
-     <button id="yes" onclick="yesClicked()">YES ❤️</button>
-    <button id="no" onmouseover="moveNo()">NO 😜</button>
-  </div>
+<audio autoplay loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
 
-  <script>
-    function yesClicked() {
-      document.getElementById("box").innerHTML = `
-        <h1>YAYYY!! 🥰💘</h1>
-        <p>
-          Mainu hor kuch nahi chahida, bas tu chahidi aa 💞
-        </p>
-         <img src="love.gif" alt="Hearts" style="width:400px; margin:20px auto; display:block;">
-      `;
-    }
+<div class="container">
+  <div class="line" id="l1">Today is Valentine’s Day… ❤️</div>
+  <div class="line" id="l2">But loving you is not just for today.</div>
+  <div class="line" id="l3">It’s for every morning I wake up next to you.</div>
+  <div class="line" id="l4">तू माझं घर आहेस… फक्त व्यक्ती नाहीस.</div>
+  <div class="line" id="l5">Tu meri life di sab ton vaddi blessing ae.</div>
 
-    function moveNo() {
-      const noBtn = document.getElementById("no");
-      const box = document.getElementById("box");
+  <img src="love.gif" id="gif">
 
-      const maxX = box.clientWidth - noBtn.offsetWidth;
-      const maxY = box.clientHeight - noBtn.offsetHeight;
+  <button id="finalBtn" onclick="finale()">Will you choose me again? 💍</button>
+</div>
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+<script>
+const lines = ["l1","l2","l3","l4","l5"];
+let delay = 1000;
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
-  </script>
+lines.forEach((id, index) => {
+  setTimeout(() => {
+    document.getElementById(id).style.opacity = 1;
+  }, delay * (index + 1));
+});
+
+setTimeout(() => {
+  document.getElementById("gif").style.opacity = 1;
+}, 6500);
+
+setTimeout(() => {
+  document.getElementById("finalBtn").style.display = "inline-block";
+}, 8500);
+
+function finale() {
+  document.body.innerHTML = `
+    <div style="text-align:center;">
+      <h1 style="font-size:40px;">Forever with you 🥰❤️</h1>
+      <p style="font-size:22px;">
+        Mainu har janam ch tu hi chahidi ae 💞<br>
+        प्रत्येक जन्मी मला तूच हवी आहेस.
+      </p>
+    </div>
+  `;
+  createHearts();
+}
+
+function createHearts(){
+  for(let i=0;i<50;i++){
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.style.left=Math.random()*100+"%";
+    heart.style.fontSize=(10+Math.random()*30)+"px";
+    heart.innerHTML="❤️";
+    document.body.appendChild(heart);
+  }
+}
+</script>
 
 </body>
 </html>
