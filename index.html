@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Forever ❤️</title>
-
 <style>
 body {
   margin:0;
@@ -14,7 +13,7 @@ body {
   color:white;
 }
 
-/* VIGNETTE EFFECT */
+/* Vignette effect */
 body::after {
   content:"";
   position:fixed;
@@ -27,7 +26,7 @@ body::after {
   z-index:3;
 }
 
-/* INTRO */
+/* Intro */
 .intro {
   position:absolute;
   width:100%;
@@ -38,38 +37,32 @@ body::after {
   animation:fadeIn 3s forwards;
   z-index:4;
 }
-
 @keyframes fadeIn { to {opacity:1;} }
 
-/* SLIDESHOW */
+/* Slideshow */
 .slideshow {
   display:none;
   width:100%;
   height:100vh;
   position:relative;
 }
-
 .slide {
   position:absolute;
   width:100%;
   height:100%;
   object-fit:cover;
   opacity:0;
-  filter:blur(8px);
   transform:scale(1);
-  transition:
-    opacity 2s ease-in-out,
-    transform 8s ease-in-out,
-    filter 2s ease-in-out;
+  filter:blur(8px);
+  transition:opacity 2s ease-in-out, transform 8s ease-in-out, filter 2s ease-in-out;
 }
-
 .active {
   opacity:1;
-  transform:scale(1.1); /* Soft zoom */
+  transform:scale(1.1);
   filter:blur(0);
 }
 
-/* TEXT OVERLAY WITH DIM */
+/* Text overlay */
 .overlay {
   position:absolute;
   bottom:90px;
@@ -82,7 +75,7 @@ body::after {
   z-index:4;
 }
 
-/* COUNTDOWN */
+/* Countdown */
 .countdown {
   position:absolute;
   bottom:20px;
@@ -95,19 +88,7 @@ body::after {
   z-index:4;
 }
 
-/* BUTTON */
-button {
-  padding:12px 25px;
-  border:none;
-  border-radius:25px;
-  font-size:16px;
-  background:#ff3366;
-  color:white;
-  cursor:pointer;
-  margin-top:15px;
-}
-
-/* SURPRISE SCREEN */
+/* Surprise screen */
 .surprise {
   position:absolute;
   width:100%;
@@ -121,21 +102,31 @@ button {
   z-index:5;
 }
 
-/* HEARTS */
+/* Button */
+button {
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  font-size:16px;
+  background:#ff3366;
+  color:white;
+  cursor:pointer;
+  margin-top:15px;
+}
+
+/* Hearts */
 .heart {
   position:absolute;
   color:red;
   animation:float 5s linear infinite;
   z-index:6;
 }
-
 @keyframes float {
   0% { transform:translateY(0); opacity:1;}
   100% { transform:translateY(-600px); opacity:0;}
 }
 </style>
 </head>
-
 <body onclick="startExperience()">
 
 <audio id="bgMusic" loop preload="auto">
@@ -147,19 +138,19 @@ button {
 </div>
 
 <div class="slideshow" id="slideshow">
-
-  <img src="1.webp" class="slide active">
-  <img src="2.webp" class="slide">
-  <img src="3.webp" class="slide">
-  <img src="4.webp" class="slide">
-  <img src="5.webp" class="slide">
-  <img src="6.webp" class="slide">
-  <img src="7.webp" class="slide">
-  <img src="8.webp" class="slide">
-  <img src="9.webp" class="slide">
-  <img src="10.webp" class="slide">
-  <img src="11.webp" class="slide">
-  <img src="12.webp" class="slide">
+  <!-- 12 images with lazy loading -->
+  <img data-src="1.webp" class="slide active">
+  <img data-src="2.webp" class="slide">
+  <img data-src="3.webp" class="slide">
+  <img data-src="4.webp" class="slide">
+  <img data-src="5.webp" class="slide">
+  <img data-src="6.webp" class="slide">
+  <img data-src="7.webp" class="slide">
+  <img data-src="8.webp" class="slide">
+  <img data-src="9.webp" class="slide">
+  <img data-src="10.webp" class="slide">
+  <img data-src="11.webp" class="slide">
+  <img data-src="12.webp" class="slide">
 
   <div class="overlay">
     Chainika ❤️ Divyesh<br>
@@ -169,7 +160,6 @@ button {
   </div>
 
   <div class="countdown" id="countdown"></div>
-
 </div>
 
 <div class="surprise" id="surpriseScreen">
@@ -177,15 +167,22 @@ button {
 </div>
 
 <script>
-
 let started = false;
 
 function startExperience(){
   if(started) return;
   started = true;
 
+  // Play music (user interaction safe)
   document.getElementById("bgMusic").play();
 
+  // Preload images
+  const slides = document.querySelectorAll(".slide");
+  slides.forEach(slide => {
+    slide.src = slide.dataset.src;
+  });
+
+  // Fade intro then show slideshow
   setTimeout(()=>{
     document.getElementById("introText").style.display="none";
     document.getElementById("slideshow").style.display="block";
@@ -194,7 +191,7 @@ function startExperience(){
 }
 
 function startSlideshow(){
-  let slides = document.querySelectorAll(".slide");
+  const slides = document.querySelectorAll(".slide");
   let index = 0;
 
   setInterval(()=>{
@@ -204,27 +201,26 @@ function startSlideshow(){
   },5000);
 }
 
-/* COUNTDOWN */
+/* Countdown */
 const foreverDate = new Date("February 14, 2050 00:00:00").getTime();
-
 setInterval(()=>{
   const now = new Date().getTime();
   const distance = foreverDate - now;
-
   const days = Math.floor(distance / (1000*60*60*24));
   const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
   const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
-
   document.getElementById("countdown").innerHTML =
-  "Countdown to Forever 💍: " + days + " days " + hours + " hrs " + minutes + " mins";
+    "Countdown to Forever 💍: " + days + " days " + hours + " hrs " + minutes + " mins";
 },1000);
 
+/* Surprise */
 function showSurprise(){
   document.getElementById("slideshow").style.display="none";
   document.getElementById("surpriseScreen").style.display="flex";
   createHearts();
 }
 
+/* Hearts effect */
 function createHearts(){
   setInterval(()=>{
     const heart=document.createElement("div");
@@ -236,8 +232,6 @@ function createHearts(){
     setTimeout(()=>heart.remove(),5000);
   },300);
 }
-
 </script>
-
 </body>
 </html>
