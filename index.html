@@ -209,21 +209,22 @@ function typeWriter(text, element, speed=40){
 }
 
 function showSlide(index){
-  slides.forEach(slide=>slide.classList.remove("active"));
+  slides.forEach(slide => slide.classList.remove("active"));
   slides[index].classList.add("active");
-  typeWriter(slideTexts[index],slideTextDiv);
-
-  if(index===slides.length-1){
-    nextBtn.innerText="Tap for Surprise 💍";
-    nextBtn.onclick=()=>alert("Forever with you ❤️");
-  }else{
-    nextBtn.innerText="Next ➡️";
-    nextBtn.onclick=()=>{
-      currentIndex++;
-      showSlide(currentIndex);
-    }
-  }
+  typeWriter(slideTexts[index], slideTextDiv);
 }
+
+/* Next Button */
+nextBtn.onclick = function(){
+  currentIndex++;
+  if(currentIndex >= slides.length){
+    currentIndex = 0; // restart slideshow
+  }
+  showSlide(currentIndex);
+}
+
+/* Initialize */
+showSlide(currentIndex);
 
 </script>
 
