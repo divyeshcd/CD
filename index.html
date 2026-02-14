@@ -275,13 +275,24 @@ yesBtn.onclick=function(){
   alert("Yay! ❤️ You made my day!");
 }
 
-/* No button runs away */
-noBtn.onmouseover=function(){
-  const maxX=window.innerWidth-100;
-  const maxY=window.innerHeight-50;
-  noBtn.style.position="absolute";
-  noBtn.style.left=Math.random()*maxX+"px";
-  noBtn.style.top=Math.random()*maxY+"px";
+// Yes button click
+yesBtn.onclick = function() {
+  alert("Yay! ❤️ You made my day!");
+}
+
+// No button moves randomly on hover, cannot be clicked
+noBtn.addEventListener("mouseenter", function() {
+  const maxX = window.innerWidth - noBtn.offsetWidth;
+  const maxY = window.innerHeight - noBtn.offsetHeight;
+  
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+  
+  noBtn.style.position = "absolute";
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
+});
+
 }
 
 </script>
